@@ -1,0 +1,53 @@
+docker build . -t ndp-node-image
+docker run -p 3000:3000 -v $(pwd):/app:ro -v /app/node_modules --env-file ./.env -d --name ndp-node-container ndp-node-image
+docker exec -it ndp-node-container /bin/bash
+
+docker ps
+docker volume ls
+docker network ls
+ocker network inspect <NETWORK NAME>
+docker volume prune
+docker logs <CONTAINER ID/NAME>
+curl -i localhost:3000
+docker kill <CONTAINER ID/NAME>
+docker container rm <CONTAINER ID/NAME> -fv
+docker image rm <IMAGE ID/NAME> -f
+docker inspect <CONTAINER ID/NAME>
+docker restart <CONTAINER ID/NAME>
+
+==============================================
+
+docker image tag node-docker-project_node-app sherwinrf/docker-node  // rename image
+docker login
+docker push sherwinrf/docker-node
+
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml build <opt-service-name>
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml push <opt-service-name>
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull <opt-service-name>
+docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --no-deps <opt-service-name>
+
+==============================================
+
+docker-compose up -d --build
+docker-compose down -v
+
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --scale node-app=2
+
+docker exec -it node-docker-project_mongoDB-app_1 mongosh -u "root" -p "example"
+
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --no-deps --force-recreate node-app
+
+==================
+
+docker exec -it node-docker-project_redis-app_1 redis-cli
+KEYS *
+GET <key>
+
+===================
+
+docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml <stack-name>
+docker node ls
+docker stack ls
+docker stack services <stack-name>
+docker stack ps <stack-name>
+docker service ls

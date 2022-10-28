@@ -1,0 +1,27 @@
+version: '3'
+services:
+  nginx-app:
+    image: nginx:stable-alpine
+    volumes:
+      - ./templates:/etc/nginx/templates
+    depends_on:
+      - node-app
+
+  node-app:
+    build: .
+    env_file:
+      - ./.env
+    depends_on:
+      - mongoDB-app
+      - redis-app
+  
+  mongoDB-app:
+    image: mongo
+    volumes:
+      - mongoDB-volume:/data/db
+
+  redis-app:
+    image: redis
+
+volumes:
+  mongoDB-volume:
